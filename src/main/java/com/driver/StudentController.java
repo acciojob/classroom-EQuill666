@@ -41,6 +41,9 @@ public class StudentController {
 
     @PutMapping("/add-student-teacher-pair")
     public ResponseEntity<String> addStudentTeacherPair(@RequestParam String student, @RequestParam String teacher){
+        if(!studentList.containsKey(student) || !teacherList.containsKey(teacher)){
+            return new ResponseEntity<>("Error! No Existing Student or Teacher", HttpStatus.BAD_REQUEST);
+        }
         if (studentTeacherMap.get(teacher) == null) {
             studentTeacherMap.put(teacher, new ArrayList<String>());
         }
