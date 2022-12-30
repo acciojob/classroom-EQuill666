@@ -33,6 +33,11 @@ public class StudentService {
         stdRepository.addStudentTeacher(std, tech);
     }
 
+    //getStudentByTeacher
+    public List<String> getStudentByTeacherName(String name){
+        return stdRepository.getStudentByTeacherName(name);
+    }
+
     //getAllStd
     public List<String> getAllStudents(){
         return stdRepository.getAllStudents();

@@ -27,68 +27,60 @@ public class StudentController {
     //APIs
     @PostMapping("/add-student")
     public ResponseEntity<String> addStudent(@RequestBody Student student){
-        studentList.put(student.getName(), student);
+        stdService.addStudent(student);
         return new ResponseEntity<>("New student added successfully", HttpStatus.CREATED);
     }
 
     @PostMapping("/add-teacher")
     public ResponseEntity<String> addTeacher(@RequestBody Teacher teacher){
-        teacherList.put(teacher.getName(), teacher);
+        stdService.addTeacher(teacher);
         return new ResponseEntity<>("New teacher added successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("/add-student-teacher-pair")
     public ResponseEntity<String> addStudentTeacherPair(@RequestParam String student, @RequestParam String teacher){
-//        if(!studentList.containsKey(student) || !teacherList.containsKey(teacher)){
-//            return new ResponseEntity<>("Error! No Existing Student or Teacher", HttpStatus.BAD_REQUEST);
-//        }
-        if (studentTeacherMap.get(teacher) == null) {
-            studentTeacherMap.put(teacher, new ArrayList<String>());
-        }
-        studentTeacherMap.get(teacher).add(student);
+        stdService.addStudentTeacher(student, teacher);
         return new ResponseEntity<>("New student-teacher pair added successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/get-student-by-name/{name}")
     public ResponseEntity<Student> getStudentByName(@PathVariable String name){
-        Student student = null; // Assign student by calling service layer method
+        Student student = stdService.getStudentByName(name); // Assign student by calling service layer method
 
-        return new ResponseEntity<>(studentList.get(name), HttpStatus.CREATED);
+        return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-teacher-by-name/{name}")
     public ResponseEntity<Teacher> getTeacherByName(@PathVariable String name){
-        Teacher teacher = null; // Assign student by calling service layer method
+        Teacher teacher = stdService.getTeacherByName(name); // Assign student by calling service layer method
 
-        return new ResponseEntity<>(teacherList.get(name), HttpStatus.CREATED);
+        return new ResponseEntity<>(teacher, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-students-by-teacher-name/{teacher}")
     public ResponseEntity<List<String>> getStudentsByTeacherName(@PathVariable String teacher){
-        List<String> students = null; // Assign list of student by calling service layer method
+        List<String> students = stdService.getStudentByTeacherName(teacher); // Assign list of student by calling service layer method
 
-        return new ResponseEntity<>(studentTeacherMap.get(teacher), HttpStatus.CREATED);
+        return new ResponseEntity<>(students, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-all-students")
     public ResponseEntity<List<String>> getAllStudents(){
-        List<String> students = null; // Assign list of student by calling service layer method
+        List<String> students = stdService.getAllStudents(); // Assign list of student by calling service layer method
 
-        List<String> answer = new ArrayList<>();
-        for(String stu : studentList.keySet())
-            answer.add(stu);
-        return new ResponseEntity<>(answer, HttpStatus.CREATED);
+        return new ResponseEntity<>(students, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete-teacher-by-name")
     public ResponseEntity<String> deleteTeacherByName(@RequestParam String teacher){
+        stdService.deleteTeacherByName(teacher);
 
-        studentTeacherMap.remove(teacher);
         return new ResponseEntity<>(teacher + " removed successfully", HttpStatus.CREATED);
     }
     @DeleteMapping("/delete-all-teachers")
     public ResponseEntity<String> deleteAllTeachers(){
-        studentTeacherMap.clear();
+        stdService.deleteAllTeachers();
+
         return new ResponseEntity<>("All teachers deleted successfully", HttpStatus.CREATED);
     }
 }
