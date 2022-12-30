@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("students")
 public class StudentController {
 
-    //Structures to Save Information
-    HashMap<String, Student> studentList = new HashMap<>();
-    HashMap<String, Teacher>  teacherList = new HashMap<>();
-    HashMap<String, List<String>> studentTeacherMap = new HashMap<>();
+    @Autowired
+    StudentService stdService;
 
     //APIs
     @PostMapping("/add-student")
